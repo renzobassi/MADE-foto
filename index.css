@@ -1,5 +1,5 @@
 
-/* ... (existing styles) ... */
+/* ... stili base ... */
 .error-message {
   background: rgba(211, 47, 47, 0.15);
   border: 1px solid #d32f2f;
@@ -149,11 +149,9 @@ main {
   transition: filter 0.3s ease;
   aspect-ratio: 1;
 }
-/* Applichiamo il mirroring solo se necessario */
 .video video.mirror {
   transform: rotateY(180deg);
 }
-
 .video:has(.focusedPhoto) video {
   filter: blur(10px) brightness(0.1);
 }
@@ -185,12 +183,8 @@ main {
   width: 100%;
 }
 @keyframes flash {
-  0% {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
+  0% { opacity: 1; }
+  to { opacity: 0; }
 }
 .videoControls {
   position: absolute;
@@ -228,62 +222,70 @@ main {
   rotate: 180deg;
 }
 .shutterSpacer {
-  width: 52px; /* Pareggia lo spazio occupato dal cameraSwitch per centrare lo shutter */
+  width: 52px;
 }
 @media (max-width: 768px) {
-  .shutterGroup {
-    gap: 30px;
-  }
-  .shutterSpacer {
-    width: 48px;
-  }
+  .shutterGroup { gap: 30px; }
+  .shutterSpacer { width: 48px; }
 }
 .modeSelector {
   display: flex;
-  gap: 16px;
-  background: #000c;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.9);
+  -webkit-backdrop-filter: blur(25px);
+  backdrop-filter: blur(25px);
   width: 100%;
-  padding: 12px;
-  border-top: 1px solid #333;
+  padding: 16px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   overflow-x: auto;
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
 }
 .modeSelector::-webkit-scrollbar {
-  display: none;
+  height: 3px;
+  display: block;
 }
+.modeSelector::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+}
+
 .modeSelector li {
   position: relative;
 }
 .modeSelector button {
   text-transform: uppercase;
-  font-size: 14px;
-  letter-spacing: 0.05em;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: grayscale(1) brightness(0.6);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: grayscale(1) opacity(0.6);
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
   white-space: nowrap;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 8px 16px;
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 10px 20px;
+  border-radius: 2px; /* Come richiesto */
   border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
+
+.modeSelector button:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.08); /* Schiarimento leggerissimo richiesto */
+  filter: grayscale(1) opacity(0.9);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
 .modeSelector button.active {
-  filter: grayscale(0) brightness(1) !important;
+  filter: none !important;
   background: #fff;
   color: #000;
   border-color: #fff;
-  transform: scale(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
 }
-@media (max-width: 768px) {
-  .modeSelector button {
-    font-size: 12px;
-    padding: 6px 12px;
-  }
-}
+
 .startButton {
   position: absolute;
   display: block;
@@ -318,12 +320,6 @@ main {
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
   pointer-events: none;
 }
-@media (max-width: 768px) {
-  .dashboard-logo-container {
-    top: 15px;
-    left: 15px;
-  }
-}
 .shutter {
   background: #000000b3;
   -webkit-backdrop-filter: blur(10px);
@@ -336,263 +332,225 @@ main {
 .shutter .icon {
   font-size: 42px;
   color: #ddd;
-  transition: color 0.2s;
-}
-.shutter:hover {
-  scale: 1.1;
-}
-.shutter:hover .icon {
-  color: #fff;
 }
 .shutter:active {
   scale: 0.8;
   rotate: 10deg;
 }
+
+/* Modale Focalizzata Desktop Fix */
 .focusedPhoto {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border-radius: 5px;
-  max-width: 85%;
-  height: 80%;
-  aspect-ratio: 1;
-  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+  border-radius: 16px;
+  width: 500px; /* Larghezza fissa su desktop */
+  max-width: 90vw;
+  max-height: 90vh; /* Altezza massima per vedere i tasti */
+  filter: drop-shadow(0 0 30px rgba(0, 0, 0, 0.8));
+  background: #111;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
+
 @media (max-width: 768px) {
   .focusedPhoto {
-    height: unset;
-    width: 90%;
-  }
-  .focusedPhoto .circleBtn {
-    left: 0;
-    right: unset;
-    translate: -50% -50%;
+    width: 92vw;
+    height: auto;
   }
 }
-.focusedPhoto img {
+
+.preview-image-container {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #000;
+  overflow: hidden;
+}
+
+.preview-image-container img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 5px;
 }
+
+.exportOverlay {
+  background: rgba(20, 20, 20, 0.95);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.downloadBtn {
+  background: #222;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.shareBtn {
+  background: #fff;
+  color: #000;
+}
+
 .circleBtn {
   position: absolute;
-  translate: 50% -50%;
-  top: 0;
-  right: 0;
-  background: #000000b3;
-  z-index: 1;
-  font-size: 23px;
-  padding: 5px;
+  background: rgba(0,0,0,0.6);
+  z-index: 10;
+  font-size: 24px;
+  padding: 8px;
   border-radius: 50%;
-  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
-  transition: all 0.2s;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: scale 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.2s;
 }
+
+.close-preview {
+  top: 12px;
+  right: 12px;
+}
+
+.close-preview:hover {
+  transform: scale(1.1);
+  background: rgba(0,0,0,0.8);
+}
+
 .deleteBtn {
+  top: 5px;
+  right: 5px;
   scale: 0;
-  translate: 25% -25%;
 }
+
 .results {
   display: flex;
   position: relative;
-  height: clamp(200px, 25dvh, 300px);
+  height: clamp(150px, 20dvh, 250px);
   border-top: 1px solid #333;
   padding: 15px;
   overflow: auto;
-  background: #111;
-}
-@media (max-width: 768px) {
-  .results {
-    height: clamp(100px, 15dvh, 200px);
-    padding: 10px;
-  }
+  background: #0a0a0a;
 }
 .results ul {
   display: flex;
-  gap: 10px;
-}
-.results ul:has(li:hover) li {
-  opacity: 0.7;
+  gap: 12px;
+  width: 100%;
 }
 .results li {
   aspect-ratio: 1;
   height: 100%;
-  transition: opacity 0.3s;
   position: relative;
 }
-.emoji-badge {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  z-index: 1;
-  font-size: 20px;
-  background: rgba(0,0,0,0.5);
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 .results li .photo {
-  border-radius: 5px;
+  border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   width: 100%;
   height: 100%;
+  transition: border-color 0.2s;
 }
-.results li:hover {
-  opacity: 1 !important;
+.results li .photo:hover {
+  border-color: rgba(255, 255, 255, 0.3);
 }
+
 .results li:hover .deleteBtn {
   scale: 1;
 }
 .results li.empty {
-  border: 1px dashed #555;
-  border-radius: 5px;
-  padding: 10px;
+  border: 2px dashed #333;
+  border-radius: 12px;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   flex-direction: column;
   gap: 10px;
-  font-size: 14px;
-}
-.results li.empty p {
-  font-size: 24px;
-}
-.results li.empty .icon {
-  color: #aaa;
-}
-@media (max-width: 768px) {
-  .results li.empty {
-    padding: 8px;
-    font-size: 11px;
-  }
-  .results li.empty p {
-    display: none;
-  }
+  color: #555;
 }
 .results li img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.results li.isBusy {
-  position: relative;
-}
 .results li.isBusy img {
-  filter: brightness(0.4);
+  filter: brightness(0.3);
+  animation: pulse 1.5s infinite;
 }
-.results li.isBusy:before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.2) 25%,
-    rgba(255, 255, 255, 0.3) 50%,
-    rgba(255, 255, 255, 0.2) 75%,
-    transparent 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite ease-in-out;
-  z-index: 1;
-  pointer-events: none;
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
 }
+
 .button {
-  border: 2px solid #fff;
-  color: #fff;
-  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+  background: #fff;
+  color: #000;
+  font-weight: 700;
   text-transform: uppercase;
-  padding: 10px 20px;
-  border-radius: 5px;
-  background: #1e88e5;
+  padding: 12px 20px;
+  border-radius: 30px;
   transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  font-size: 14px;
 }
-.button:hover {
-  scale: 1.1;
-}
+
 .button:active {
-  scale: 0.8;
+  transform: scale(0.95);
 }
-.downloadButton {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  translate: -50% 50%;
+
+.icon.sync {
+  animation: rotate 2s linear infinite;
 }
-.makeGif {
-  position: sticky;
-  right: 15px;
-  align-self: center;
-  background: #e64a19;
-  border: 2px solid #fff;
-  color: #fff;
-  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
-  text-transform: uppercase;
-  padding: 10px 20px;
-  border-radius: 5px;
-  white-space: nowrap;
-  margin-left: auto;
-  z-index: 99;
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
-@media (max-width: 768px) {
-  .makeGif {
-    right: 0;
-  }
-}
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  to {
-    background-position: 200% 0;
-  }
-}
-@keyframes tooltipFadeIn {
-  0% {
-    opacity: 0;
-    transform: translate(-50%) translateY(calc(-100% - 15px));
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%) translateY(calc(-100% - 5px));
-  }
-}
+
+/* Tooltip migliorato - Risolto flickering */
 .tooltip {
   position: fixed;
-  background: #000000e6;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  z-index: 1000;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 20px #00000080;
-  pointer-events: none;
-  width: 250px;
-  white-space: normal;
-  animation: tooltipFadeIn 0.2s ease-out forwards;
-  color: #ccc;
+  background: rgba(0, 0, 0, 0.95);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  padding: 14px 18px;
+  border-radius: 14px;
+  font-size: 13px;
+  z-index: 10000;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  width: min(280px, 80vw);
+  pointer-events: none; /* CRITICO: evita il flickering del mouse */
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+  transform: translate(-50%, -100%);
+  animation: tooltipFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
-@media (max-width: 768px) {
-  .tooltip {
-    display: none;
-  }
+
+.tooltip p {
+  line-height: 1.5;
+  color: #fff;
+  margin-bottom: 8px;
+  font-style: italic;
+  font-weight: 400;
 }
-.tooltip.isFirst {
-  margin-left: 80px;
-}
+
 .tooltip h4 {
-  text-transform: uppercase;
   font-size: 10px;
+  text-transform: uppercase;
   color: #777;
-  margin-top: 5px;
+  letter-spacing: 0.15em;
+  font-weight: 800;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 8px;
+}
+
+@keyframes tooltipFadeIn {
+  0% { opacity: 0; transform: translate(-50%, -95%); }
+  100% { opacity: 1; transform: translate(-50%, -100%); }
 }
