@@ -1,556 +1,329 @@
 
-/* ... stili base ... */
-.error-message {
-  background: rgba(211, 47, 47, 0.15);
-  border: 1px solid #d32f2f;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 320px;
-  margin-top: 20px;
-  color: #ffcdd2;
+:root {
+  --primary: #fff;
+  --bg: #000;
+  --accent: #2196f3;
+  --font-main: 'Google Sans Display', sans-serif;
+  --font-mono: 'Google Sans Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--primary);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  height: 100dvh;
 }
-.error-message .icon {
-  font-size: 48px;
-  color: #d32f2f;
-}
-.error-message p {
-  font-size: 16px;
-  line-height: 1.4;
-}
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-* ::selection {
-  background: #fff;
-  color: #111;
-}
-:root {
-  background: #000;
-  color: #fff;
-  font-family:
-    Space Mono,
-    Google Sans Display,
-    sans-serif;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 400;
-}
-li {
-  list-style: none;
-}
-input,
-textarea {
-  font-family:
-    Space Mono,
-    Google Sans Display,
-    sans-serif;
-  background: none;
-  color: #fff;
-  border: none;
-  outline: none;
-  font-size: 18px;
-  resize: none;
-  -webkit-user-select: text;
-  user-select: text;
-}
-input::placeholder,
-textarea::placeholder {
-  -webkit-user-select: none;
-  user-select: none;
-}
-select {
-  appearance: none;
-  font-family: inherit;
-  padding: 10px;
-  background: #111;
-  color: #fff;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-}
-button {
-  font-family:
-    Space Mono,
-    Google Sans Display,
-    sans-serif;
-  background: none;
-  color: #fff;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  -webkit-user-select: none;
-  user-select: none;
+
+.video {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #0a0a0a;
   display: flex;
-  align-items: center;
-  gap: 5px;
-}
-button:focus {
-  outline: none;
-}
-button[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-button .icon {
-  display: block;
-}
-.button {
-  display: inline-flex;
-  padding: 10px;
-  border-radius: 8px;
-  gap: 4px;
   align-items: center;
   justify-content: center;
-  color: #fffc;
 }
-@media (max-width: 768px) {
-  .button {
-    font-size: 13px;
-    padding: 8px 16px;
-  }
+
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.icon {
-  font-family: Material Symbols Outlined;
-  font-weight: 300;
-  line-height: 1;
+
+video.mirror { transform: scaleX(-1); }
+
+.dashboard-logo-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.8;
 }
-main {
-  width: 100vw;
-  height: 100dvh;
-  overflow: hidden;
+
+.startButton {
+  position: absolute;
+  z-index: 20;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
 }
-.video {
-  overflow: hidden;
-  position: relative;
-  flex: 1;
-  background-image: linear-gradient(to bottom, #000, #111);
+
+.slogan {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 2px;
 }
-.video video {
-  display: block;
-  margin: 0 auto;
-  height: 100%;
-  max-width: 100%;
-  object-fit: cover;
-  transition: filter 0.3s ease;
-  aspect-ratio: 1;
-}
-.video video.mirror {
-  transform: rotateY(180deg);
-}
-.video:has(.focusedPhoto) video {
-  filter: blur(10px) brightness(0.1);
-}
-.video:has(.focusedPhoto) .shutterGroup {
-  opacity: 0;
-  pointer-events: none;
-}
+
 .flash {
   position: absolute;
   inset: 0;
   background: #fff;
-  opacity: 1;
-  animation: flash 0.3s ease-out forwards;
-}
-.customPrompt {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
-  background: #000c;
   z-index: 100;
-  padding: 20px;
-  width: 90%;
-  max-width: 420px;
-  border-radius: 5px;
+  animation: flashAnim 0.5s ease-out forwards;
 }
-.customPrompt textarea {
-  font-size: 14px;
-  width: 100%;
-}
-@keyframes flash {
-  0% { opacity: 1; }
+
+@keyframes flashAnim {
+  from { opacity: 1; }
   to { opacity: 0; }
 }
+
 .videoControls {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
+  padding: 30px 20px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8));
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   gap: 20px;
 }
+
 .shutterGroup {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 40px;
-  width: 100%;
-}
-.cameraSwitch {
-  background: rgba(255, 255, 255, 0.1);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border-radius: 50%;
-  padding: 12px;
-  transition: all 0.2s;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-.cameraSwitch .icon {
-  font-size: 28px;
-  color: #fff;
-}
-.cameraSwitch:active {
-  scale: 0.9;
-  rotate: 180deg;
-}
-.shutterSpacer {
-  width: 52px;
-}
-@media (max-width: 768px) {
-  .shutterGroup { gap: 30px; }
-  .shutterSpacer { width: 48px; }
-}
-.modeSelector {
-  display: flex;
-  gap: 12px;
-  background: rgba(0, 0, 0, 0.9);
-  -webkit-backdrop-filter: blur(25px);
-  backdrop-filter: blur(25px);
-  width: 100%;
-  padding: 16px 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.2) transparent;
-}
-.modeSelector::-webkit-scrollbar {
-  height: 3px;
-  display: block;
-}
-.modeSelector::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.15);
-  border-radius: 10px;
+  gap: 25px;
 }
 
-.modeSelector li {
-  position: relative;
-}
-.modeSelector button {
-  text-transform: uppercase;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+.shutter {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #fff;
+  border: 4px solid rgba(255,255,255,0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: grayscale(1) opacity(0.6);
-  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
-  white-space: nowrap;
-  background: rgba(255, 255, 255, 0.04);
-  padding: 10px 20px;
-  border-radius: 2px; /* Come richiesto */
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  transition: transform 0.2s;
 }
 
-.modeSelector button:hover:not(.active) {
-  background: rgba(255, 255, 255, 0.08); /* Schiarimento leggerissimo richiesto */
-  filter: grayscale(1) opacity(0.9);
-  border-color: rgba(255, 255, 255, 0.2);
+.shutter:active { transform: scale(0.9); }
+
+.shutter .icon { color: #000; font-size: 32px; }
+
+.cameraSwitch {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.modeSelector {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  overflow-x: auto;
+  width: 100%;
+  padding: 10px;
+  scrollbar-width: none;
+}
+
+.modeSelector::-webkit-scrollbar { display: none; }
+
+.modeSelector button {
+  white-space: nowrap;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
+  font-family: var(--font-main);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .modeSelector button.active {
-  filter: none !important;
   background: #fff;
   color: #000;
-  border-color: #fff;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+  font-weight: 700;
 }
 
-.startButton {
+.results {
+  height: 120px;
+  background: #000;
+  border-top: 1px solid #222;
+  overflow-x: auto;
+  padding: 15px;
+}
+
+.results ul {
+  display: flex;
+  gap: 15px;
+  list-style: none;
+  height: 100%;
+}
+
+.photo {
+  width: 90px;
+  height: 90px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: #111;
+  position: relative;
+}
+
+.photo img { width: 100%; height: 100%; object-fit: cover; }
+
+.isBusy .photo { opacity: 0.5; cursor: wait; }
+
+.circleBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.deleteBtn {
   position: absolute;
-  display: block;
+  top: -8px;
+  right: -8px;
+  background: #ff5252;
+}
+
+.focusedPhoto {
+  position: absolute;
   inset: 0;
-  text-align: center;
-  font-size: 18px;
-  padding: 10px 20px;
+  background: rgba(0,0,0,0.95);
+  z-index: 200;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  z-index: 20;
-}
-.start-logo {
-  max-width: 80%;
-  height: auto;
-}
-.slogan {
-  font-weight: 700;
-  font-size: clamp(24px, 5vw, 42px);
-  letter-spacing: -0.02em;
-  color: #fff;
-  margin-bottom: 10px;
-  text-shadow: 0 4px 12px rgba(0,0,0,0.5);
-}
-.dashboard-logo-container {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 50;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-  pointer-events: none;
-}
-.shutter {
-  background: #000000b3;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border-radius: 50%;
-  padding: 10px;
-  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
-  transition: all 0.2s;
-}
-.shutter .icon {
-  font-size: 42px;
-  color: #ddd;
-}
-.shutter:active {
-  scale: 0.8;
-  rotate: 10deg;
-}
-
-/* Modale Focalizzata Desktop Fix */
-.focusedPhoto {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 16px;
-  width: 500px; /* Larghezza fissa su desktop */
-  max-width: 90vw;
-  max-height: 90vh; /* Altezza massima per vedere i tasti */
-  filter: drop-shadow(0 0 30px rgba(0, 0, 0, 0.8));
-  background: #111;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  z-index: 1000;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-@media (max-width: 768px) {
-  .focusedPhoto {
-    width: 92vw;
-    height: auto;
-  }
+  padding: 20px;
 }
 
 .preview-image-container {
   width: 100%;
+  max-width: 512px;
   aspect-ratio: 1;
-  background: #000;
-  overflow: hidden;
-}
-
-.preview-image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.exportOverlay {
-  background: rgba(20, 20, 20, 0.95);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  padding: 16px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.downloadBtn {
-  background: #222;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.shareBtn {
-  background: #fff;
-  color: #000;
-}
-
-.circleBtn {
-  position: absolute;
-  background: rgba(0,0,0,0.6);
-  z-index: 10;
-  font-size: 24px;
-  padding: 8px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: transform 0.2s;
-}
-
-.close-preview {
-  top: 12px;
-  right: 12px;
-}
-
-.close-preview:hover {
-  transform: scale(1.1);
-  background: rgba(0,0,0,0.8);
-}
-
-.deleteBtn {
-  top: 5px;
-  right: 5px;
-  scale: 0;
-}
-
-.results {
-  display: flex;
-  position: relative;
-  height: clamp(150px, 20dvh, 250px);
-  border-top: 1px solid #333;
-  padding: 15px;
-  overflow: auto;
-  background: #0a0a0a;
-}
-.results ul {
-  display: flex;
-  gap: 12px;
-  width: 100%;
-}
-.results li {
-  aspect-ratio: 1;
-  height: 100%;
-  position: relative;
-}
-.results li .photo {
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  width: 100%;
-  height: 100%;
-  transition: border-color 0.2s;
-}
-.results li .photo:hover {
-  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
 
-.results li:hover .deleteBtn {
-  scale: 1;
-}
-.results li.empty {
-  border: 2px dashed #333;
-  border-radius: 12px;
-  width: 100%;
+.preview-image-container img { width: 100%; height: 100%; object-fit: contain; }
+
+.button-group {
+  margin-top: 25px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  flex-direction: column;
-  gap: 10px;
-  color: #555;
-}
-.results li img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.results li.isBusy img {
-  filter: brightness(0.3);
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 0.5; }
-  50% { opacity: 1; }
-  100% { opacity: 0.5; }
+  gap: 15px;
 }
 
 .button {
+  padding: 12px 24px;
+  border-radius: 30px;
   background: #fff;
   color: #000;
+  border: none;
+  font-family: var(--font-main);
   font-weight: 700;
-  text-transform: uppercase;
-  padding: 12px 20px;
-  border-radius: 30px;
-  transition: all 0.2s;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
 }
 
-.button:active {
-  transform: scale(0.95);
+.button.secondary {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
 }
 
-.icon.sync {
-  animation: rotate 2s linear infinite;
-}
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.close-preview {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 44px;
+  height: 44px;
 }
 
-/* Tooltip migliorato - Risolto flickering */
+.customPrompt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 400px;
+  background: rgba(20,20,20,0.95);
+  padding: 20px;
+  border-radius: 16px;
+  z-index: 150;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.customPrompt textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: var(--font-main);
+  font-size: 18px;
+  resize: none;
+  height: 100px;
+  margin-top: 10px;
+}
+
+.icon { font-family: 'Material Symbols Outlined'; font-size: 24px; vertical-align: middle; }
+
 .tooltip {
   position: fixed;
-  background: rgba(0, 0, 0, 0.95);
-  -webkit-backdrop-filter: blur(15px);
-  backdrop-filter: blur(15px);
-  padding: 14px 18px;
-  border-radius: 14px;
-  font-size: 13px;
-  z-index: 10000;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  width: min(280px, 80vw);
-  pointer-events: none; /* CRITICO: evita il flickering del mouse */
-  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+  background: #fff;
+  color: #000;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  pointer-events: none;
+  z-index: 1000;
   transform: translate(-50%, -100%);
-  animation: tooltipFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  white-space: pre-wrap;
-  word-break: break-word;
+  max-width: 200px;
+  text-align: center;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-.tooltip p {
-  line-height: 1.5;
-  color: #fff;
-  margin-bottom: 8px;
-  font-style: italic;
-  font-weight: 400;
+.error-bubble {
+  background: rgba(211, 47, 47, 0.95);
+  border: 1px solid #f44336;
 }
 
-.tooltip h4 {
-  font-size: 10px;
-  text-transform: uppercase;
-  color: #777;
-  letter-spacing: 0.15em;
-  font-weight: 800;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  padding-top: 8px;
-}
-
-@keyframes tooltipFadeIn {
-  0% { opacity: 0; transform: translate(-50%, -95%); }
-  100% { opacity: 1; transform: translate(-50%, -100%); }
-}
+.error-text { text-align: center; padding: 10px; color: #fff; }
