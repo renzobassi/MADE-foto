@@ -119,7 +119,6 @@ export default function App() {
       const file = new File([blob], 'made_ritratto.png', { type: 'image/png' })
 
       if (navigator.share) {
-        // Controlla se il browser supporta specificamente la condivisione di file
         const shareData = {
           files: [file],
           title: 'Il mio MADE Ritratto',
@@ -129,7 +128,6 @@ export default function App() {
         if (navigator.canShare && navigator.canShare(shareData)) {
           await navigator.share(shareData);
         } else {
-          // Fallback alla condivisione solo testo/URL se i file non sono supportati
           await navigator.share({
             title: 'Il mio MADE Ritratto',
             text: 'Guarda la mia trasformazione con MADE Ritratti!'
@@ -139,8 +137,10 @@ export default function App() {
         alert("La condivisione nativa non è supportata su questo browser. Usa il tasto 'Salva'.")
       }
     } catch (err) {
-      // Ignora l'errore se l'utente ha semplicemente annullato l'operazione
-      if (err.name === 'AbortError') return;
+      // Gestione silenziosa se l'utente annulla la condivisione
+      if (err.name === 'AbortError' || err.message?.toLowerCase().includes('canceled')) {
+        return;
+      }
       console.error('Share error:', err)
     }
   }
