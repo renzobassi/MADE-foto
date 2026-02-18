@@ -44,9 +44,6 @@ export default function App() {
       streamRef.current.getTracks().forEach(track => track.stop())
       streamRef.current = null
     }
-    if (videoRef.current) {
-      videoRef.current.srcObject = null
-    }
   }
 
   const startVideo = async (mode = facingMode) => {
@@ -122,15 +119,28 @@ export default function App() {
       const file = new File([blob], 'made_ritratto.png', { type: 'image/png' })
 
       if (navigator.share) {
-        await navigator.share({
+        // Controlla se il browser supporta specificamente la condivisione di file
+        const shareData = {
           files: [file],
           title: 'Il mio MADE Ritratto',
           text: 'Guarda che trasformazione ho creato con MADE Ritratti!'
-        })
+        };
+
+        if (navigator.canShare && navigator.canShare(shareData)) {
+          await navigator.share(shareData);
+        } else {
+          // Fallback alla condivisione solo testo/URL se i file non sono supportati
+          await navigator.share({
+            title: 'Il mio MADE Ritratto',
+            text: 'Guarda la mia trasformazione con MADE Ritratti!'
+          });
+        }
       } else {
         alert("La condivisione nativa non è supportata su questo browser. Usa il tasto 'Salva'.")
       }
     } catch (err) {
+      // Ignora l'errore se l'utente ha semplicemente annullato l'operazione
+      if (err.name === 'AbortError') return;
       console.error('Share error:', err)
     }
   }
@@ -148,7 +158,7 @@ export default function App() {
         {videoActive && <div className="dashboard-logo-container"><Logo height={28} /></div>}
         
         {globalError && (
-          <div className="customPrompt error-bubble">
+          <div className="customPrompt error-bubble" onClick={e => e.stopPropagation()}>
             <button className="circleBtn" onClick={clearError}><span className="icon">close</span></button>
             <div className="error-text"><p>{globalError}</p></div>
           </div>
